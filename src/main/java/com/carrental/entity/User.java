@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,7 +27,6 @@ public class User {
     private int password;
 
 
-//    @OneToMany(mappedBy = "cars")
-//    @JoinColumn(name ="id")
-//    private Set<Car> cars;
+    @OneToMany(mappedBy = "user")
+    private List<Car> cars;
 }

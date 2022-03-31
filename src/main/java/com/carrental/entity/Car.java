@@ -27,8 +27,7 @@ public class Car {
     @Column
     private double dayPrice;
 
-//    @ManyToOne
-//    @JoinColumn(name = "id")
-//    private User user;
+    @ManyToOne
+    private User user;
 
 }
