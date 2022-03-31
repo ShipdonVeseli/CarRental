@@ -2,6 +2,7 @@ package com.carrental.service;
 
 import com.carrental.entity.Car;
 import com.carrental.entity.User;
+import com.carrental.entity.exception.CarIsAlreadyAssignedException;
 import com.carrental.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class UserService {
         User user = getUser(userId);
         Car car = carService.getCar(carId);
         if(Objects.nonNull(car.getUser())) {
-            return null;
+            throw new CarIsAlreadyAssignedException(userId);
         }
         user.addCar(car);
         car.setUser(user);
