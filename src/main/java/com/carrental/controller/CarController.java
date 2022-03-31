@@ -3,10 +3,12 @@ package com.carrental.controller;
 import com.carrental.entity.Car;
 import com.carrental.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cars")
@@ -19,13 +21,25 @@ public class CarController {
     }
 
     @PostMapping
-    public Car createNewCar(@RequestBody Car car) {
-        return carService.createNewCar(car);
+    public ResponseEntity<Car> createNewCar(@RequestBody Car newCar) {
+        Car carEntity = carService.createNewCar(newCar);
+        return new ResponseEntity<>(carEntity, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<Car>> getAllCars() {
         List<Car> cars = carService.getAllCars();
-        return ResponseEntity.ok(cars);
+        return new ResponseEntity<>(cars, HttpStatus.OK);
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<Car> getCar(@PathVariable("id") long id) {
+        Optional<Car> car = carService.getCar(id);
+        if(car.isPresent()) {
+            return new ResponseEntity<>(car.get(), HttpStatus.OK);
+        } else {
+            //TODO: error handling
+            return null;
+        }
     }
 }
