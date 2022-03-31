@@ -45,13 +45,14 @@ public class UserController {
             if (car.isPresent()) {
                 Car carEntity = car.get();
 
-
                 List<Car> cars = userEntity.getCars();
                 cars.add(carEntity);
                 userEntity.setCars(cars);
 
+                return ResponseEntity.ok(carEntity);
             }
         }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }
