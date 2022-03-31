@@ -48,7 +48,7 @@ public class UserController {
                 List<Car> cars = userEntity.getCars();
                 cars.add(carEntity);
                 userEntity.setCars(cars);
-
+                userService.updateUser(userEntity);
                 return ResponseEntity.ok(carEntity);
             }
         }
