@@ -38,8 +38,7 @@ public class CarController {
         if(car.isPresent()) {
             return new ResponseEntity<>(car.get(), HttpStatus.OK);
         } else {
-            //TODO: error handling
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
