@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -38,12 +39,17 @@ public class UserController {
     @PostMapping("/{userId}/cars/{carId}")
     public ResponseEntity<Car> rentCar(@PathVariable String userId, @PathVariable String carId) {
         Optional<User> user = userService.getUser(Long.parseLong(userId));
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             User userEntity = user.get();
             Optional<Car> car = carService.getCar(Long.parseLong(carId));
-            if(car.isPresent()) {
+            if (car.isPresent()) {
                 Car carEntity = car.get();
-                userEntity.setCars(userEntity.getCars().add(carEntity));
+
+
+                List<Car> cars = userEntity.getCars();
+                cars.add(carEntity);
+                userEntity.setCars(cars);
+
             }
         }
     }
