@@ -1,11 +1,9 @@
 package com.carrental.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -27,11 +25,17 @@ public class User {
     @Column
     private String password;
 
-    @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<Car> cars;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Car> cars = new ArrayList<>();
 
+    public void addCar(Car car) {
+        cars.add(car);
+    }
+
+    public void removeCar(Car car) {
+        cars.remove(car);
+    }
 
     @Override
     public boolean equals(Object o) {
