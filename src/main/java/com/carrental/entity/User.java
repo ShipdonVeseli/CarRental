@@ -26,7 +26,7 @@ public class User {
     private int password;
 
 
-    @OneToMany
-    @JoinColumn(name ="id")
-    private Set<Car> cars;
+//    @OneToMany(mappedBy = "cars")
+//    @JoinColumn(name ="id")
+//    private Set<Car> cars;
 }
