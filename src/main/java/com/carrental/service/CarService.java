@@ -25,10 +25,12 @@ public class CarService {
         return carRepository.findAll();
     }
     
-    public Optional<Car> getCar(long id) {
-        return carRepository.findById(id);
+    public Car getCar(Long id) {
+        Optional<Car> car = carRepository.findById(id);
+        if(car.isPresent()) {
+            return car.get();
+        } else {
+            return null;
+        }
     }
-
-
-
 }

@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/cars")
@@ -34,12 +33,8 @@ public class CarController {
     
     @GetMapping("/{id}")
     public ResponseEntity<Car> getCar(@PathVariable("id") long id) {
-        Optional<Car> car = carService.getCar(id);
-        if(car.isPresent()) {
-            return new ResponseEntity<>(car.get(), HttpStatus.OK);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        Car car = carService.getCar(id);
+        return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
 }

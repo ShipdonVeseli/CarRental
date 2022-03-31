@@ -29,18 +29,19 @@ public class UserService {
         return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
     }
 
-    public Optional<User> getUser(long id) {
-        return userRepository.findById(id);
-    }
-
-    public User updateUser(User user){
-        return userRepository.save(user);
+    public User getUser(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()) {
+            return user.get();
+        } else {
+            return null;
+        }
     }
 
     @Transactional
     public User addCarToUser(Long userId, Long carId) {
-        User user = getUser(userId).get();
-        Car car = carService.getCar(carId).get();
+        User user = getUser(userId);
+        Car car = carService.getCar(carId);
         if(Objects.nonNull(car.getUser())) {
             return null;
         }
@@ -51,8 +52,8 @@ public class UserService {
 
     @Transactional
     public User removeCarFromUser(Long userId, Long carId) {
-        User user = getUser(userId).get();
-        Car car = carService.getCar(carId).get();
+        User user = getUser(userId);
+        Car car = carService.getCar(carId);
         if(Objects.nonNull(car.getUser())) {
             return null;
         }
