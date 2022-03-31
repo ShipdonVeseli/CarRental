@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -27,7 +28,20 @@ public class Car {
     @Column
     private double dayPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return availableSeats == car.availableSeats && Double.compare(car.dayPrice, dayPrice) == 0 && Objects.equals(id, car.id) && Objects.equals(transmission, car.transmission) && Objects.equals(user, car.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, availableSeats, transmission, dayPrice, user);
+    }
 }
