@@ -23,4 +23,8 @@ public class UserService {
     public User getUser(User user) {
         return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
     }
+
+    public Optional<User> getUser(long id) {
+        return userRepository.findById(id);
+    }
 }
