@@ -3,6 +3,7 @@ package com.carrental.service;
 import com.carrental.entity.Car;
 import com.carrental.entity.User;
 import com.carrental.entity.exception.CarIsAlreadyAssignedException;
+import com.carrental.entity.exception.UserHasNotThisCarException;
 import com.carrental.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,17 @@ public class UserService {
         }
     }
 
+    public boolean checkIfUserHasCar(Long userId, Long carId) {
+        User user = getUser(userId);
+        Car car = carService.getCar(carId);
+        for (int i=0; i<user.getCars().size(); i++) {
+            if (user.getCars().get(i).equals(car)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Transactional
     public User addCarToUser(Long userId, Long carId) {
         User user = getUser(userId);
@@ -55,7 +67,10 @@ public class UserService {
     public User removeCarFromUser(Long userId, Long carId) {
         User user = getUser(userId);
         Car car = carService.getCar(carId);
-        user.removeCar(car);
-        return user;
+        if (checkIfUserHasCar(userId, carId)) {
+            user.removeCar(car);
+            return user;
+        }
+        throw new UserHasNotThisCarException(carId);
     }
 }
