@@ -2,6 +2,7 @@ package com.carrental;
 
 import com.carrental.client.CurrencyClient;
 import com.carrental.client.SoapClientConfig;
+import com.carrental.currency.ArrayOfdouble;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -20,9 +21,13 @@ public class CarrentalApplication {
 
 		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(SoapClientConfig.class);
 		CurrencyClient currencyClient = annotationConfigApplicationContext.getBean(CurrencyClient.class);
-		System.out.println(currencyClient.getCurrencyResponse(50.0,"usd","try").getConvertCurrencyResult().doubleValue());
+		ArrayOfdouble arrayOfdouble = new ArrayOfdouble();
+		arrayOfdouble.getDouble().add(10.0);
+		arrayOfdouble.getDouble().add(20.0);
+		arrayOfdouble.getDouble().add(30.0);
 
-	}
+		System.out.println(currencyClient.convertCurrencyListResponse(arrayOfdouble,"usd","try").getConvertCurrencyListResult().getValue().getDouble());
+}
 
 	static final String ALLOWEDHEADER = "Access-Control-Allow-Origin";
 	//Enabling Cross Site Scripting
