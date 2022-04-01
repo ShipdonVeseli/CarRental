@@ -4,6 +4,7 @@ import com.carrental.entity.Car;
 import com.carrental.entity.User;
 import com.carrental.entity.exception.CarIsAlreadyAssignedException;
 import com.carrental.entity.exception.UserHasNotThisCarException;
+import com.carrental.entity.exception.UsernameAlreadyExistsException;
 import com.carrental.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,15 @@ public class UserService {
     }
 
     public User createNewUser(User user) {
-        return userRepository.save(user);
+        if(checkIfUsernameExists(user.getUsername())) {
+            return userRepository.save(user);
+        } else {
+            throw new UsernameAlreadyExistsException(user.getUsername());
+        }
+    }
+
+    public boolean checkIfUsernameExists(String username) {
+        return userRepository.findByUsername(username).isEmpty();
     }
 
     public User getUser(User user) {
