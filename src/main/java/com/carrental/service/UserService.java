@@ -44,7 +44,7 @@ public class UserService {
         User user = getUser(userId);
         Car car = carService.getCar(carId);
         if(Objects.nonNull(car.getUser())) {
-            throw new CarIsAlreadyAssignedException(userId);
+            throw new CarIsAlreadyAssignedException(carId);
         }
         user.addCar(car);
         car.setUser(user);
@@ -55,9 +55,6 @@ public class UserService {
     public User removeCarFromUser(Long userId, Long carId) {
         User user = getUser(userId);
         Car car = carService.getCar(carId);
-        if(Objects.nonNull(car.getUser())) {
-            return null;
-        }
         user.removeCar(car);
         return user;
     }
