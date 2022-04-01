@@ -23,9 +23,9 @@ public class UserController {
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<User> login(@RequestBody User user) {
-        User userEntity = userService.getUser(user);
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> login(@PathVariable Long userId) {
+        User userEntity = userService.getUser(userId);
         return ResponseEntity.ok(userEntity);
     }
 
