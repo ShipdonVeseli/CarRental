@@ -28,7 +28,12 @@ public class UserService {
     }
 
     public User getUser(User user) {
-        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+        Optional<User> optionalUser = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+        if(optionalUser.isPresent()) {
+            return optionalUser.get();
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public User getUser(Long id) {
