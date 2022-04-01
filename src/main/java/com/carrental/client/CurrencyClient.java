@@ -26,7 +26,7 @@ public class CurrencyClient extends WebServiceGatewaySupport {
         getCurrencyRequest.setDestinationCurrency(destinationCurrency2);
         getCurrencyRequest.setValue(50.0);
         ObjectFactory objectFactory = new ObjectFactory();
-
+        //hello
         return (ConvertCurrencyResponse) getWebServiceTemplate().marshalSendAndReceive(getCurrencyRequest,new SoapActionCallback("http://tempuri.org/IService1/convertCurrency"));
     }
 
