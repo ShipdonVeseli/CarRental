@@ -23,10 +23,10 @@ public class UserController {
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> login(@PathVariable Long userId) {
-        User userEntity = userService.getUser(userId);
-        return ResponseEntity.ok(userEntity);
+    @PostMapping()
+    public ResponseEntity<User> login(@RequestBody User user) {
+        User userEntity = userService.getUser(user);
+        return new ResponseEntity<>(userEntity, HttpStatus.OK);
     }
 
     @PostMapping("/{userId}/cars/{carId}")
