@@ -25,7 +25,7 @@ public class UserService {
     }
 
     public User createNewUser(User user) {
-        if(checkIfUsernameExists(user.getUsername())) {
+        if(!checkIfUsernameExists(user.getUsername())) {
             return userRepository.save(user);
         } else {
             throw new UsernameAlreadyExistsException(user.getUsername());
@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public boolean checkIfUsernameExists(String username) {
-        return userRepository.findByUsername(username).isEmpty();
+        return userRepository.findByUsername(username).isPresent();
     }
 
     public User getUser(User user) {
