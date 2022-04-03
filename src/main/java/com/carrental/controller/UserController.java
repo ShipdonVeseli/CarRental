@@ -1,11 +1,14 @@
 package com.carrental.controller;
 
+import com.carrental.entity.Car;
 import com.carrental.entity.User;
 import com.carrental.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -19,13 +22,19 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User newUser) {
         User userEntity = userService.createNewUser(newUser);
-        return new ResponseEntity<>(userEntity, HttpStatus.OK);
+        return new ResponseEntity<>(userEntity, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody User user) {
         User userEntity = userService.getUser(user);
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{userId}/cars")
+    public ResponseEntity<List<Car>> getCars(@PathVariable final Long userId) {
+        List<Car> carsFromUser = userService.getCars(userId);
+        return new ResponseEntity<>(carsFromUser, HttpStatus.OK);
     }
 
     @PostMapping("/users/{userId}/cars/{carId}")
