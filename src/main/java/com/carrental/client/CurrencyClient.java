@@ -22,7 +22,7 @@ public class CurrencyClient extends WebServiceGatewaySupport {
         getCurrencyRequest.setSourceCurrency((JAXBElement<String>)(factory.createConvertCurrencySourceCurrency(sourceCurrency)));
         getCurrencyRequest.setDestinationCurrency((JAXBElement<String>)factory.createConvertCurrencyDestinationCurrency(destinationCurrency));
         getCurrencyRequest.setValue(50.0);
-        return (ConvertCurrencyResponse) getWebServiceTemplate().marshalSendAndReceive(getCurrencyRequest,new SoapActionCallback("http://tempuri.org/IService1/convertCurrency"));
+        return (ConvertCurrencyResponse) getWebServiceTemplate().marshalSendAndReceive(getCurrencyRequest,new SoapActionCallback(SoapClientConfig.baseNameSpace+"convertCurrency"));
     }
     public ConvertCurrencyListResponse convertCurrencyListResponse(ArrayOfdouble values, String sourceCurrency, String destinationCurrency)
     {
@@ -31,9 +31,7 @@ public class CurrencyClient extends WebServiceGatewaySupport {
         getCurrencyRequestList.setValues((JAXBElement<ArrayOfdouble>) factory.createConvertCurrencyListValues(values));
         getCurrencyRequestList.setSourceCurrency((JAXBElement<String>) factory.createConvertCurrencySourceCurrency(sourceCurrency));
         getCurrencyRequestList.setDestinationCurrency((JAXBElement<String>) factory.createConvertCurrencyDestinationCurrency(destinationCurrency));
-        return (ConvertCurrencyListResponse) getWebServiceTemplate().marshalSendAndReceive(getCurrencyRequestList,new SoapActionCallback("http://tempuri.org/IService1/convertCurrencyList")) ;
-        //hello
-       // return (ConvertCurrencyResponse) getWebServiceTemplate().marshalSendAndReceive(getCurrencyRequest,new SoapActionCallback("http://tempuri.org/IService1/convertCurrency"));
+        return (ConvertCurrencyListResponse) getWebServiceTemplate().marshalSendAndReceive(getCurrencyRequestList,new SoapActionCallback(SoapClientConfig.baseNameSpace+"convertCurrencyList")) ;
     }
 
 

@@ -1,36 +1,7 @@
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Service1" targetNamespace="http://tempuri.org/">
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://currencyservice.com" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CurrencyService" targetNamespace="http://currencyservice.com">
     <wsdl:types>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
-            <xs:import namespace="http://schemas.datacontract.org/2004/07/CurrencyConverter"/>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://currencyservice.com">
             <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-            <xs:element name="GetData">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="value" type="xs:int"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="GetDataResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="GetDataResult" nillable="true" type="xs:string"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="GetDataUsingDataContract">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CurrencyConverter" minOccurs="0" name="composite" nillable="true" type="q1:CompositeType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="GetDataUsingDataContractResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CurrencyConverter" minOccurs="0" name="GetDataUsingDataContractResult" nillable="true" type="q2:CompositeType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
             <xs:element name="convertCurrency">
                 <xs:complexType>
                     <xs:sequence>
@@ -50,7 +21,7 @@
             <xs:element name="convertCurrencyList">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="values" nillable="true" type="q3:ArrayOfdouble"/>
+                        <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="values" nillable="true" type="q1:ArrayOfdouble"/>
                         <xs:element minOccurs="0" name="sourceCurrency" nillable="true" type="xs:string"/>
                         <xs:element minOccurs="0" name="destinationCurrency" nillable="true" type="xs:string"/>
                     </xs:sequence>
@@ -59,7 +30,7 @@
             <xs:element name="convertCurrencyListResponse">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="convertCurrencyListResult" nillable="true" type="q4:ArrayOfdouble"/>
+                        <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="convertCurrencyListResult" nillable="true" type="q2:ArrayOfdouble"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -105,15 +76,6 @@
             <xs:attribute name="Id" type="xs:ID"/>
             <xs:attribute name="Ref" type="xs:IDREF"/>
         </xs:schema>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/CurrencyConverter" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CurrencyConverter">
-            <xs:complexType name="CompositeType">
-                <xs:sequence>
-                    <xs:element minOccurs="0" name="BoolValue" type="xs:boolean"/>
-                    <xs:element minOccurs="0" name="StringValue" nillable="true" type="xs:string"/>
-                </xs:sequence>
-            </xs:complexType>
-            <xs:element name="CompositeType" nillable="true" type="tns:CompositeType"/>
-        </xs:schema>
         <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
             <xs:complexType name="ArrayOfdouble">
                 <xs:sequence>
@@ -123,70 +85,32 @@
             <xs:element name="ArrayOfdouble" nillable="true" type="tns:ArrayOfdouble"/>
         </xs:schema>
     </wsdl:types>
-    <wsdl:message name="IService1_GetData_InputMessage">
-        <wsdl:part name="parameters" element="tns:GetData"/>
-    </wsdl:message>
-    <wsdl:message name="IService1_GetData_OutputMessage">
-        <wsdl:part name="parameters" element="tns:GetDataResponse"/>
-    </wsdl:message>
-    <wsdl:message name="IService1_GetDataUsingDataContract_InputMessage">
-        <wsdl:part name="parameters" element="tns:GetDataUsingDataContract"/>
-    </wsdl:message>
-    <wsdl:message name="IService1_GetDataUsingDataContract_OutputMessage">
-        <wsdl:part name="parameters" element="tns:GetDataUsingDataContractResponse"/>
-    </wsdl:message>
-    <wsdl:message name="IService1_convertCurrency_InputMessage">
+    <wsdl:message name="ICurrencyService_convertCurrency_InputMessage">
         <wsdl:part name="parameters" element="tns:convertCurrency"/>
     </wsdl:message>
-    <wsdl:message name="IService1_convertCurrency_OutputMessage">
+    <wsdl:message name="ICurrencyService_convertCurrency_OutputMessage">
         <wsdl:part name="parameters" element="tns:convertCurrencyResponse"/>
     </wsdl:message>
-    <wsdl:message name="IService1_convertCurrencyList_InputMessage">
+    <wsdl:message name="ICurrencyService_convertCurrencyList_InputMessage">
         <wsdl:part name="parameters" element="tns:convertCurrencyList"/>
     </wsdl:message>
-    <wsdl:message name="IService1_convertCurrencyList_OutputMessage">
+    <wsdl:message name="ICurrencyService_convertCurrencyList_OutputMessage">
         <wsdl:part name="parameters" element="tns:convertCurrencyListResponse"/>
     </wsdl:message>
-    <wsdl:portType name="IService1">
-        <wsdl:operation name="GetData">
-            <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetData" message="tns:IService1_GetData_InputMessage"/>
-            <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetDataResponse" message="tns:IService1_GetData_OutputMessage"/>
-        </wsdl:operation>
-        <wsdl:operation name="GetDataUsingDataContract">
-            <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetDataUsingDataContract" message="tns:IService1_GetDataUsingDataContract_InputMessage"/>
-            <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetDataUsingDataContractResponse" message="tns:IService1_GetDataUsingDataContract_OutputMessage"/>
-        </wsdl:operation>
+    <wsdl:portType name="ICurrencyService">
         <wsdl:operation name="convertCurrency">
-            <wsdl:input wsaw:Action="http://tempuri.org/IService1/convertCurrency" message="tns:IService1_convertCurrency_InputMessage"/>
-            <wsdl:output wsaw:Action="http://tempuri.org/IService1/convertCurrencyResponse" message="tns:IService1_convertCurrency_OutputMessage"/>
+            <wsdl:input wsaw:Action="http://currencyservice.com/ICurrencyService/convertCurrency" message="tns:ICurrencyService_convertCurrency_InputMessage"/>
+            <wsdl:output wsaw:Action="http://currencyservice.com/ICurrencyService/convertCurrencyResponse" message="tns:ICurrencyService_convertCurrency_OutputMessage"/>
         </wsdl:operation>
         <wsdl:operation name="convertCurrencyList">
-            <wsdl:input wsaw:Action="http://tempuri.org/IService1/convertCurrencyList" message="tns:IService1_convertCurrencyList_InputMessage"/>
-            <wsdl:output wsaw:Action="http://tempuri.org/IService1/convertCurrencyListResponse" message="tns:IService1_convertCurrencyList_OutputMessage"/>
+            <wsdl:input wsaw:Action="http://currencyservice.com/ICurrencyService/convertCurrencyList" message="tns:ICurrencyService_convertCurrencyList_InputMessage"/>
+            <wsdl:output wsaw:Action="http://currencyservice.com/ICurrencyService/convertCurrencyListResponse" message="tns:ICurrencyService_convertCurrencyList_OutputMessage"/>
         </wsdl:operation>
     </wsdl:portType>
-    <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
+    <wsdl:binding name="BasicHttpBinding_ICurrencyService" type="tns:ICurrencyService">
         <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
-        <wsdl:operation name="GetData">
-            <soap:operation soapAction="http://tempuri.org/IService1/GetData" style="document"/>
-            <wsdl:input>
-                <soap:body use="literal"/>
-            </wsdl:input>
-            <wsdl:output>
-                <soap:body use="literal"/>
-            </wsdl:output>
-        </wsdl:operation>
-        <wsdl:operation name="GetDataUsingDataContract">
-            <soap:operation soapAction="http://tempuri.org/IService1/GetDataUsingDataContract" style="document"/>
-            <wsdl:input>
-                <soap:body use="literal"/>
-            </wsdl:input>
-            <wsdl:output>
-                <soap:body use="literal"/>
-            </wsdl:output>
-        </wsdl:operation>
         <wsdl:operation name="convertCurrency">
-            <soap:operation soapAction="http://tempuri.org/IService1/convertCurrency" style="document"/>
+            <soap:operation soapAction="http://currencyservice.com/ICurrencyService/convertCurrency" style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -195,7 +119,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="convertCurrencyList">
-            <soap:operation soapAction="http://tempuri.org/IService1/convertCurrencyList" style="document"/>
+            <soap:operation soapAction="http://currencyservice.com/ICurrencyService/convertCurrencyList" style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -204,9 +128,9 @@
             </wsdl:output>
         </wsdl:operation>
     </wsdl:binding>
-    <wsdl:service name="Service1">
-        <wsdl:port name="BasicHttpBinding_IService1" binding="tns:BasicHttpBinding_IService1">
-            <soap:address location="http://localhost:56969/CurrencyService.svc"/>
+    <wsdl:service name="CurrencyService">
+        <wsdl:port name="BasicHttpBinding_ICurrencyService" binding="tns:BasicHttpBinding_ICurrencyService">
+            <soap:address location="http://localhost:52301/CurrencyService.svc"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
