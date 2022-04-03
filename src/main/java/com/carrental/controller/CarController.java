@@ -32,7 +32,7 @@ public class CarController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Car> getCar(@PathVariable("id") long id) {
+    public ResponseEntity<Car> getCar(@PathVariable("id") Long id) {
         Car car = carService.getCar(id);
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
