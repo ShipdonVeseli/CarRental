@@ -29,7 +29,7 @@ public class SoapClientConfig {
                     String result = wsdlLine.substring(targetIndex,wsdlLine.length());
                     rootNameSpace = getWSDLSubstring(result);
                 }
-                if(wsdlLine.contains("portType") && baseNameSpace == null && rootNameSpace != null)
+                else if(wsdlLine.contains("portType") && baseNameSpace == null && rootNameSpace != null)
                 {
                     baseNameSpace= rootNameSpace+"/"+ getWSDLSubstring(wsdlLine) +"/";
                 }
