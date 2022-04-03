@@ -26,7 +26,6 @@ public class SoapClientConfig {
                 if(wsdlLine.contains("targetNamespace") && rootNameSpace == null)
                 {
                     int targetIndex = wsdlLine.indexOf("targetNamespace");
-                    int lastIndex = wsdlLine.lastIndexOf("\"");
                     String result = wsdlLine.substring(targetIndex,wsdlLine.length());
                     rootNameSpace = getWSDLSubstring(result);
                 }
