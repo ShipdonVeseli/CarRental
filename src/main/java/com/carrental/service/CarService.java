@@ -33,4 +33,8 @@ public class CarService {
             return null;
         }
     }
+
+    public List<Car> getAvailableCars() {
+        return carRepository.getAvailableCars();
+    }
 }

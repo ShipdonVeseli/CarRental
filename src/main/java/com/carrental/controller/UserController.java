@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
 public class UserController {
     private UserService userService;
 
@@ -29,13 +28,13 @@ public class UserController {
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
     }
 
-    @PostMapping("/{userId}/cars/{carId}")
+    @PostMapping("/users/{userId}/cars/{carId}")
     public ResponseEntity<User> addCarToUser(@PathVariable final Long userId, @PathVariable final Long carId) {
         User user = userService.addCarToUser(userId, carId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{userId}/cars/{carId}")
+    @DeleteMapping("/users/{userId}/cars/{carId}")
     public ResponseEntity<User> removeCarFromUser(@PathVariable final Long userId, @PathVariable final Long carId) {
         User user = userService.removeCarFromUser(userId, carId);
         return new ResponseEntity<>(user, HttpStatus.OK);
