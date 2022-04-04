@@ -11,4 +11,7 @@ import java.util.List;
 public interface CarRepository extends JpaRepository<Car, Long> {
     @Query("FROM Car WHERE user.id IS NULL")
     List<Car> getAvailableCars();
+
+    @Query("SELECT dayPrice FROM Car")
+    List<Double> getAllPrices();
 }

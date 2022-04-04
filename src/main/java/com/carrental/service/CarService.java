@@ -37,4 +37,8 @@ public class CarService {
     public List<Car> getAvailableCars() {
         return carRepository.getAvailableCars();
     }
+
+    public List<Double> getAllPrices() {
+        return carRepository.getAllPrices();
+    }
 }

@@ -93,4 +93,8 @@ public class UserService {
         }
         throw new UserHasNotThisCarException(carId);
     }
+
+    public List<Double> getAllPrices() {
+        return carService.getAllPrices();
+    }
 }
