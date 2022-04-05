@@ -6,10 +6,13 @@ import com.carrental.entity.exception.CarIsAlreadyAssignedException;
 import com.carrental.entity.exception.UserHasNotThisCarException;
 import com.carrental.entity.exception.UsernameAlreadyExistsException;
 import com.carrental.repository.UserRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -70,6 +73,21 @@ public class UserService {
         User user = getUser(userId);
         return user.getCars();
     }
+
+    public Long getUserIdIfPasswordMatches(User user) {
+        User user2 = userRepository.findByUsername(user.getUsername()).get();
+        if(!digest(user.getPassword()).equals(user2.getPassword())){
+            System.out.println("error");
+        }
+        return user.getId();
+    }
+
+    @SneakyThrows
+    private String digest(String preDigest){
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        return new String(md.digest(preDigest.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
+    }
+
 
     @Transactional
     public User addCarToUser(Long userId, Long carId) {

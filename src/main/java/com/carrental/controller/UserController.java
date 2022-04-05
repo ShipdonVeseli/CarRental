@@ -5,6 +5,8 @@ import com.carrental.client.SoapClientConfig;
 import com.carrental.currency.ArrayOfdouble;
 import com.carrental.entity.Car;
 import com.carrental.entity.User;
+import com.carrental.entity.exception.JWTParseException;
+import com.carrental.service.JWTService;
 import com.carrental.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -17,10 +19,11 @@ import java.util.List;
 @RestController
 public class UserController {
     private UserService userService;
-
+    final JWTService jwtService;
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JWTService jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
@@ -30,17 +33,24 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User user) {
+    public ResponseEntity<String> login(@RequestBody User user) {
         User userEntity = userService.getUser(user);
-        return new ResponseEntity<>(userEntity, HttpStatus.OK);
+        Long id = userService.getUserIdIfPasswordMatches(userEntity);
+        return ResponseEntity.ok(jwtService.buildJWT(id));
     }
 
-    @GetMapping("/users/{userId}/cars")
+   /* @GetMapping("/users/{userId}/cars")
     public ResponseEntity<List<Car>> getCars(@PathVariable final Long userId) {
         List<Car> carsFromUser = userService.getCars(userId);
         return new ResponseEntity<>(carsFromUser, HttpStatus.OK);
     }
-
+    */
+   @GetMapping("/users/cars")
+   public ResponseEntity<?> getCars(@RequestHeader("Authorization") String authHeader) throws JWTParseException {
+       Long id = jwtService.parseJWT(authHeader);
+       List<Car> carsFromUser = userService.getCars(id);
+       return new ResponseEntity<>(carsFromUser, HttpStatus.OK);
+   }
     @PostMapping("/users/{userId}/cars/{carId}")
     public ResponseEntity<User> addCarToUser(@PathVariable final Long userId, @PathVariable final Long carId) {
         User user = userService.addCarToUser(userId, carId);
