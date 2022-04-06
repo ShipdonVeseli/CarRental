@@ -9,11 +9,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/currency")
 public class CurrencyController {
 
     private UserService userService;
@@ -23,8 +25,8 @@ public class CurrencyController {
         this.userService = userService;
     }
 
-    @PostMapping("/converter/{currency}")
-    public ResponseEntity<?> changeCurrency(@PathVariable final String currency) {
+    @PostMapping("/listconverter/{currency}")
+    public ResponseEntity<?> changeCurrencyList(@PathVariable final String currency) {
         List<Double> allPrices = userService.getAllPrices();
         AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(SoapClientConfig.class);
         CurrencyClient currencyClient = annotationConfigApplicationContext.getBean(CurrencyClient.class);
