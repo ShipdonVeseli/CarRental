@@ -17,13 +17,14 @@ import java.util.Objects;
 @ToString(onlyExplicitlyIncluded = true)
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false, updatable = false)
     private Long id;
 
     @Column
     private String username;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column
     private String password;
 
