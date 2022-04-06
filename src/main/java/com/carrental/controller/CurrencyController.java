@@ -4,6 +4,7 @@ import com.carrental.client.CurrencyClient;
 import com.carrental.client.SoapClientConfig;
 import com.carrental.currency.ArrayOfdouble;
 import com.carrental.currency.ConvertCurrencyResponse;
+import com.carrental.model.CurrencyRequest;
 import com.carrental.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -38,12 +39,12 @@ public class CurrencyController {
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
-    @PostMapping("/convertToDollar/{sourceCurrency}/{value}")
-    public ResponseEntity<Double> changeCurrency(@PathVariable final String sourceCurrency, @PathVariable final String value) {
+    @PostMapping("/convertToDollar")
+    public ResponseEntity<Double> changeCurrency(@RequestBody CurrencyRequest currencyRequest) {
         AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(SoapClientConfig.class);
         CurrencyClient currencyClient = annotationConfigApplicationContext.getBean(CurrencyClient.class);
 
-        Double result = currencyClient.getCurrencyResponse(Double.valueOf(value),sourceCurrency,DATABASE_CURRENCY).getConvertCurrencyResult();
+        Double result = currencyClient.getCurrencyResponse(currencyRequest.getValue(), currencyRequest.getSourceCurrency(), DATABASE_CURRENCY).getConvertCurrencyResult();
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 }
