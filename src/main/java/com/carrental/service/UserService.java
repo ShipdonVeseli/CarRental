@@ -3,6 +3,7 @@ package com.carrental.service;
 import com.carrental.entity.Car;
 import com.carrental.entity.User;
 import com.carrental.entity.exception.CarIsAlreadyAssignedException;
+import com.carrental.entity.exception.UserDoesNotExistsException;
 import com.carrental.entity.exception.UserHasNotThisCarException;
 import com.carrental.entity.exception.UsernameAlreadyExistsException;
 import com.carrental.repository.UserRepository;
@@ -30,15 +31,18 @@ public class UserService implements UserDetailsService {
     }
 
     public User createNewUser(User user) {
-        if(!checkIfUsernameExists(user.getUsername())) {
-            return userRepository.save(user);
-        } else {
+        if(userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new UsernameAlreadyExistsException(user.getUsername());
         }
+        return userRepository.save(user);
     }
 
-    public boolean checkIfUsernameExists(String username) {
-        return userRepository.findByUsername(username).isPresent();
+    public User getUserByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if(user.isEmpty()) {
+            throw new UserDoesNotExistsException(username);
+        }
+        return user.get();
     }
 
     public User getUser(User user) {
@@ -95,7 +99,7 @@ public class UserService implements UserDetailsService {
             user.removeCar(car);
             return user;
         }
-        throw new UserHasNotThisCarException(carId);
+        throw new UserHasNotThisCarException(userId);
     }
 
     public List<Double> getAllPrices() {
