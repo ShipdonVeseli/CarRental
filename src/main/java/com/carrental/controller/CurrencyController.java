@@ -3,16 +3,13 @@ package com.carrental.controller;
 import com.carrental.client.CurrencyClient;
 import com.carrental.client.SoapClientConfig;
 import com.carrental.currency.ArrayOfdouble;
-import com.carrental.entity.Car;
+import com.carrental.currency.ConvertCurrencyResponse;
 import com.carrental.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +17,7 @@ import java.util.List;
 @RequestMapping("/currency")
 public class CurrencyController {
 
+    public static final String DATABASE_CURRENCY = "usd";
     private UserService userService;
 
     @Autowired
@@ -33,13 +31,19 @@ public class CurrencyController {
         AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(SoapClientConfig.class);
         CurrencyClient currencyClient = annotationConfigApplicationContext.getBean(CurrencyClient.class);
         ArrayOfdouble arrayOfdouble = new ArrayOfdouble();
-        for (int i=0; i<allPrices.size(); i++) {
-            arrayOfdouble.getDouble().add(allPrices.get(i));
+        for (int car=0; car<allPrices.size(); car++) {
+            arrayOfdouble.getDouble().add(allPrices.get(car));
         }
-
-        List <Double> result = currencyClient.convertCurrencyListResponse(arrayOfdouble,"usd",currency).getConvertCurrencyListResult().getValue().getDouble();
-        System.out.println("This is my list"+result.toString());
+        List <Double> result = currencyClient.convertCurrencyListResponse(arrayOfdouble, DATABASE_CURRENCY,currency).getConvertCurrencyListResult().getValue().getDouble();
         return new ResponseEntity<>(result,HttpStatus.OK);
+    }
 
+    @PostMapping("/convertToDollar/{sourceCurrency}/{value}")
+    public ResponseEntity<Double> changeCurrency(@PathVariable final String sourceCurrency, @PathVariable final String value) {
+        AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(SoapClientConfig.class);
+        CurrencyClient currencyClient = annotationConfigApplicationContext.getBean(CurrencyClient.class);
+
+        Double result = currencyClient.getCurrencyResponse(Double.valueOf(value),sourceCurrency,DATABASE_CURRENCY).getConvertCurrencyResult();
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 }
