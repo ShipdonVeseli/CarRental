@@ -27,11 +27,10 @@ public class CarService {
     
     public Car getCar(Long id) {
         Optional<Car> car = carRepository.findById(id);
-        if(car.isPresent()) {
-            return car.get();
-        } else {
-            return null;
+        if(car.isEmpty()) {
+            throw new CarDoesNotExistsException(id);
         }
+        return car.get();
     }
 
     public List<Car> getAvailableCars() {
