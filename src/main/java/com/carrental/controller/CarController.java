@@ -32,9 +32,13 @@ public class CarController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Car> getCar(@PathVariable("id") Long id) {
-        Car car = carService.getCar(id);
-        return new ResponseEntity<>(car, HttpStatus.OK);
+    public ResponseEntity<?> getCar(@PathVariable("id") Long id) {
+        try {
+            Car car = carService.getCar(id);
+            return new ResponseEntity<>(car, HttpStatus.OK);
+        } catch (CarDoesNotExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/availableCars")
