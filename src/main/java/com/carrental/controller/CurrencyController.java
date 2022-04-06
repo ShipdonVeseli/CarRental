@@ -3,9 +3,11 @@ package com.carrental.controller;
 import com.carrental.client.CurrencyClient;
 import com.carrental.client.SoapClientConfig;
 import com.carrental.currency.ArrayOfdouble;
+import com.carrental.entity.Car;
 import com.carrental.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +28,7 @@ public class CurrencyController {
     }
 
     @PostMapping("/listconverter/{currency}")
-    public ResponseEntity<?> changeCurrencyList(@PathVariable final String currency) {
+    public ResponseEntity<List<Double>> changeCurrencyList(@PathVariable final String currency) {
         List<Double> allPrices = userService.getAllPrices();
         AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(SoapClientConfig.class);
         CurrencyClient currencyClient = annotationConfigApplicationContext.getBean(CurrencyClient.class);
@@ -34,6 +36,10 @@ public class CurrencyController {
         for (int i=0; i<allPrices.size(); i++) {
             arrayOfdouble.getDouble().add(allPrices.get(i));
         }
-        return (ResponseEntity<?>) currencyClient.convertCurrencyListResponse(arrayOfdouble,"usd",currency).getConvertCurrencyListResult().getValue().getDouble();
+
+        List <Double> result = currencyClient.convertCurrencyListResponse(arrayOfdouble,"usd",currency).getConvertCurrencyListResult().getValue().getDouble();
+        System.out.println("This is my list"+result.toString());
+        return new ResponseEntity<>(result,HttpStatus.OK);
+
     }
 }
