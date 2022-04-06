@@ -1,6 +1,7 @@
 package com.carrental.service;
 
 import com.carrental.entity.Car;
+import com.carrental.entity.exception.CarDoesNotExistsException;
 import com.carrental.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
