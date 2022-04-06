@@ -58,7 +58,8 @@ public class UserController {
 
         final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
         final String token = jwtUtility.generateToken(userDetails);
-        return new ResponseEntity<>(new JwtResponse(token), HttpStatus.OK);
+        User user = userService.getUserByUsername(userDetails.getUsername());
+        return new ResponseEntity<>(new JwtResponse(token, user.getId()), HttpStatus.OK);
     }
 
     @GetMapping("/users/{userId}/cars")
