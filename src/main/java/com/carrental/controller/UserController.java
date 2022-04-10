@@ -15,10 +15,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,20 +28,23 @@ public class UserController {
     private UserService userService;
     private JwtUtility jwtUtility;
     private AuthenticationManager authenticationManager;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService, JwtUtility jwtUtility, AuthenticationManager authenticationManager) {
+    public UserController(UserService userService, JwtUtility jwtUtility, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.jwtUtility = jwtUtility;
         this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User newUser) {
         try {
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
             User userEntity = userService.createNewUser(newUser);
             return new ResponseEntity<>(userEntity, HttpStatus.CREATED);
-        } catch (UsernameAlreadyExistsException | InvalidInputException e) {
+        } catch (UsernameAlreadyExistsException e) {
             return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT);
         }
     }

@@ -2,14 +2,15 @@ package com.carrental.service;
 
 import com.carrental.entity.Car;
 import com.carrental.entity.User;
-import com.carrental.entity.exception.*;
+import com.carrental.entity.exception.CarIsAlreadyAssignedException;
+import com.carrental.entity.exception.UserDoesNotExistsException;
+import com.carrental.entity.exception.UserHasNotThisCarException;
+import com.carrental.entity.exception.UsernameAlreadyExistsException;
 import com.carrental.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,7 +23,6 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     private CarService carService;
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public UserService(UserRepository userRepository, CarService carService) {
@@ -34,15 +34,7 @@ public class UserService implements UserDetailsService {
         if(userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new UsernameAlreadyExistsException(user.getUsername());
         }
-        if(!checkIfUsernameAndPasswordAreValid(user.getUsername(), user.getPassword())) {
-            throw new InvalidInputException("Invalid Input. Username and Password must contain at least 5 characters.");
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
-    }
-
-    public boolean checkIfUsernameAndPasswordAreValid(String username, String password) {
-        return username.length() >= 5 && password.length() >= 5;
     }
 
     public User getUserByUsername(String username) {
