@@ -102,10 +102,6 @@ public class UserService implements UserDetailsService {
         throw new UserHasNotThisCarException(userId);
     }
 
-    public List<Double> getAllPrices() {
-        return carService.getAllPrices();
-    }
-
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
