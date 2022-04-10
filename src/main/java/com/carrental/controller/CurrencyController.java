@@ -29,7 +29,7 @@ public class CurrencyController {
     }
 
     @PostMapping("/cars/{currency}")
-    public ResponseEntity<List<Car>> changeCurrencyList(@PathVariable final String currency) {
+    public ResponseEntity<List<Double>> changeCurrencyList(@PathVariable final String currency) {
         List<Double> allPrices = carService.getPricesOfAvailableCars();
         AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(SoapClientConfig.class);
         CurrencyClient currencyClient = annotationConfigApplicationContext.getBean(CurrencyClient.class);
@@ -38,11 +38,11 @@ public class CurrencyController {
             arrayOfdouble.getDouble().add(allPrices.get(car));
         }
         List <Double> result = currencyClient.convertCurrencyListResponse(arrayOfdouble, DATABASE_CURRENCY,currency).getConvertCurrencyListResult().getValue().getDouble();
-        List<Car> cars = carService.getAvailableCars();
-        for(int i=0; i<cars.size(); i++) {
-            cars.get(i).setDayPrice(result.get(i));
-        }
-        return new ResponseEntity<>(cars,HttpStatus.OK);
+//        List<Car> cars = carService.getAvailableCars();
+//        for(int i=0; i<cars.size(); i++) {
+//            cars.get(i).setDayPrice(result.get(i));
+//        }
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
 }
