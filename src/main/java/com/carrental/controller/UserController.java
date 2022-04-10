@@ -3,6 +3,7 @@ package com.carrental.controller;
 import com.carrental.entity.Car;
 import com.carrental.entity.User;
 import com.carrental.entity.exception.CarIsAlreadyAssignedException;
+import com.carrental.entity.exception.InvalidInputException;
 import com.carrental.entity.exception.UserHasNotThisCarException;
 import com.carrental.entity.exception.UsernameAlreadyExistsException;
 import com.carrental.model.JwtRequest;
@@ -17,7 +18,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,23 +27,20 @@ public class UserController {
     private UserService userService;
     private JwtUtility jwtUtility;
     private AuthenticationManager authenticationManager;
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(PasswordEncoder passwordEncoder, UserService userService, JwtUtility jwtUtility, AuthenticationManager authenticationManager) {
+    public UserController(UserService userService, JwtUtility jwtUtility, AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.jwtUtility = jwtUtility;
         this.authenticationManager = authenticationManager;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User newUser) {
         try {
-            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
             User userEntity = userService.createNewUser(newUser);
             return new ResponseEntity<>(userEntity, HttpStatus.CREATED);
-        } catch (UsernameAlreadyExistsException e) {
+        } catch (UsernameAlreadyExistsException | InvalidInputException e) {
             return new ResponseEntity<>(e.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT);
         }
     }
