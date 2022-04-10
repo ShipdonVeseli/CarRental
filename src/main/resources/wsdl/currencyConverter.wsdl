@@ -130,7 +130,7 @@
     </wsdl:binding>
     <wsdl:service name="CurrencyService">
         <wsdl:port name="BasicHttpBinding_ICurrencyService" binding="tns:BasicHttpBinding_ICurrencyService">
-            <soap:address location="http://localhost:52301/CurrencyService.svc"/>
+            <soap:address location="http://localhost:57736/CurrencyService.svc"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
