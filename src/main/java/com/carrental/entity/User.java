@@ -22,11 +22,11 @@ public class User {
     @Column(nullable = false, updatable = false)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column
+    @Column(nullable = false)
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL)

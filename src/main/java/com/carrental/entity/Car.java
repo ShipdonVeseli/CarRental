@@ -16,7 +16,7 @@ import java.util.Objects;
 @ToString(onlyExplicitlyIncluded = true)
 public class Car {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false, updatable = false)
     private Long id;
 
