@@ -35,32 +35,39 @@ public class CurrencyController {
     }
 
     @PostMapping("/cars/availableCars/{currency}")
-    public ResponseEntity<List<Double>> convertAvailableCars(@PathVariable final String currency) {
+    public ResponseEntity<List<Car>> convertAvailableCars(@PathVariable final String currency) {
         List<Double> allPrices = carService.getPricesOfAvailableCars();
         List<Double> result = getConvertedList(allPrices, currency);
-//        List<Car> cars = carService.getAvailableCars();
-//        for(int i=0; i<cars.size(); i++) {
-//            cars.get(i).setDayPrice(result.get(i));
-//        }
-        return new ResponseEntity<>(result,HttpStatus.OK);
+        List<Car> cars = carService.getAvailableCars();
+        for(int i=0; i<cars.size(); i++) {
+            cars.get(i).setDayPrice(result.get(i));
+        }
+        return new ResponseEntity<>(cars,HttpStatus.OK);
     }
 
     @PostMapping("/cars/{currency}")
-    public ResponseEntity<List<Double>> convertAllCars(@PathVariable final String currency) {
+    public ResponseEntity<List<Car>> convertAllCars(@PathVariable final String currency) {
         List<Double> prices = carService.getPricesOfAllCars();
         List<Double> result = getConvertedList(prices, currency);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        List<Car> cars = carService.getAllCars();
+        for(int i=0; i<cars.size(); i++) {
+            cars.get(i).setDayPrice(result.get(i));
+        }
+        return new ResponseEntity<>(cars, HttpStatus.OK);
     }
 
     @PostMapping("/users/{userId}/cars/{currency}")
-    public ResponseEntity<List<Double>> convertCarsFromUser(@PathVariable final Long userId, @PathVariable final String currency) {
+    public ResponseEntity<List<Car>> convertCarsFromUser(@PathVariable final Long userId, @PathVariable final String currency) {
         List<Car> cars = userService.getUser(userId).getCars();
         List<Double> prices = new ArrayList<>();
         for(int i=0; i<cars.size(); i++) {
             prices.add(cars.get(i).getDayPrice());
         }
         List<Double> result = getConvertedList(prices, currency);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        for(int i=0; i<cars.size(); i++) {
+            cars.get(i).setDayPrice(result.get(i));
+        }
+        return new ResponseEntity<>(cars, HttpStatus.OK);
     }
 
     public List<Double> getConvertedList(List<Double> list, String currency) {
