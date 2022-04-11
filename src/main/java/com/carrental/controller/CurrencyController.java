@@ -5,6 +5,7 @@ import com.carrental.client.SoapClientConfig;
 import com.carrental.currency.ArrayOfdouble;
 import com.carrental.entity.Car;
 import com.carrental.service.CarService;
+import com.carrental.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -14,35 +15,61 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/converter")
 public class CurrencyController {
 
+    private static final AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(SoapClientConfig.class);
+    private static final CurrencyClient currencyClient = annotationConfigApplicationContext.getBean(CurrencyClient.class);
     public static final String DATABASE_CURRENCY = "usd";
     private CarService carService;
+    private UserService userService;
 
     @Autowired
-    public CurrencyController(CarService carService) {
+    public CurrencyController(CarService carService, UserService userService) {
         this.carService = carService;
+        this.userService = userService;
     }
 
-    @PostMapping("/cars/{currency}")
-    public ResponseEntity<List<Double>> changeCurrencyList(@PathVariable final String currency) {
+    @PostMapping("/cars/availableCars/{currency}")
+    public ResponseEntity<List<Double>> convertAvailableCars(@PathVariable final String currency) {
         List<Double> allPrices = carService.getPricesOfAvailableCars();
-        AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(SoapClientConfig.class);
-        CurrencyClient currencyClient = annotationConfigApplicationContext.getBean(CurrencyClient.class);
-        ArrayOfdouble arrayOfdouble = new ArrayOfdouble();
-        for (int car=0; car<allPrices.size(); car++) {
-            arrayOfdouble.getDouble().add(allPrices.get(car));
-        }
-        List <Double> result = currencyClient.convertCurrencyListResponse(arrayOfdouble, DATABASE_CURRENCY,currency).getConvertCurrencyListResult().getValue().getDouble();
+        List<Double> result = getConvertedList(allPrices, currency);
 //        List<Car> cars = carService.getAvailableCars();
 //        for(int i=0; i<cars.size(); i++) {
 //            cars.get(i).setDayPrice(result.get(i));
 //        }
         return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+
+    @PostMapping("/cars/{currency}")
+    public ResponseEntity<List<Double>> convertAllCars(@PathVariable final String currency) {
+        List<Double> prices = carService.getPricesOfAllCars();
+        List<Double> result = getConvertedList(prices, currency);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping("/users/{userId}/cars/{currency}")
+    public ResponseEntity<List<Double>> convertCarsFromUser(@PathVariable final Long userId, @PathVariable final String currency) {
+        List<Car> cars = userService.getUser(userId).getCars();
+        List<Double> prices = new ArrayList<>();
+        for(int i=0; i<cars.size(); i++) {
+            prices.add(cars.get(i).getDayPrice());
+        }
+        List<Double> result = getConvertedList(prices, currency);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    public List<Double> getConvertedList(List<Double> list, String currency) {
+        ArrayOfdouble arrayOfdouble = new ArrayOfdouble();
+        for(int i=0; i<list.size(); i++) {
+            arrayOfdouble.getDouble().add(list.get(i));
+        }
+        List <Double> result = currencyClient.convertCurrencyListResponse(arrayOfdouble, DATABASE_CURRENCY,currency).getConvertCurrencyListResult().getValue().getDouble();
+        return result;
     }
 
 }

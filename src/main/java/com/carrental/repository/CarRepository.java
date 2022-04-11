@@ -14,4 +14,7 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 
     @Query("SELECT dayPrice FROM Car WHERE user.id IS NULL")
     List<Double> getPricesOfAvailableCars();
+
+    @Query("SELECT dayPrice FROM Car")
+    List<Double> getPricesOfAllCars();
 }
