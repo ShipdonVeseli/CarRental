@@ -8,6 +8,7 @@ import com.carrental.entity.exception.UserHasNotThisCarException;
 import com.carrental.entity.exception.UsernameAlreadyExistsException;
 import com.carrental.model.JwtRequest;
 import com.carrental.model.JwtResponse;
+import com.carrental.service.CurrencyService;
 import com.carrental.service.UserService;
 import com.carrental.utility.JwtUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,18 @@ import java.util.List;
 @RestController
 public class UserController {
     private UserService userService;
+    private CurrencyService currencyService;
     private JwtUtility jwtUtility;
     private AuthenticationManager authenticationManager;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService, JwtUtility jwtUtility, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService, CurrencyService currencyService, JwtUtility jwtUtility, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.jwtUtility = jwtUtility;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
+        this.currencyService = currencyService;
     }
 
     @PostMapping("/register")
@@ -64,8 +67,11 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/cars")
-    public ResponseEntity<List<Car>> getCars(@PathVariable final Long userId) {
+    public ResponseEntity<List<Car>> getCars(@PathVariable final Long userId, @RequestParam(name = "currency") String currency) {
         List<Car> carsFromUser = userService.getCars(userId);
+        if(!currency.equals("USD")) {
+            carsFromUser = currencyService.convertListOfCars(carsFromUser, currency);
+        }
         return new ResponseEntity<>(carsFromUser, HttpStatus.OK);
     }
 

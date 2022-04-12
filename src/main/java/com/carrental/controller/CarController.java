@@ -3,6 +3,7 @@ package com.carrental.controller;
 import com.carrental.entity.Car;
 import com.carrental.entity.exception.CarDoesNotExistsException;
 import com.carrental.service.CarService;
+import com.carrental.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,12 @@ import java.util.List;
 @RequestMapping("/cars")
 public class CarController {
     private CarService carService;
+    private CurrencyService currencyService;
 
     @Autowired
-    public CarController(CarService carService) {
+    public CarController(CarService carService, CurrencyService currencyService) {
         this.carService = carService;
+        this.currencyService = currencyService;
     }
 
     @PostMapping
@@ -28,8 +31,11 @@ public class CarController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Car>> getAllCars() {
+    public ResponseEntity<List<Car>> getAllCars(@RequestParam(name = "currency") String currency) {
         List<Car> cars = carService.getAllCars();
+        if(!currency.equals("USD")) {
+            cars = currencyService.convertListOfCars(cars, currency);
+        }
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
     
@@ -44,8 +50,11 @@ public class CarController {
     }
 
     @GetMapping("/availableCars")
-    public ResponseEntity<List<Car>> getAvailableCars() {
+    public ResponseEntity<List<Car>> getAvailableCars(@RequestParam(name = "currency") String currency) {
         List<Car> availableCars = carService.getAvailableCars();
+        if(!currency.equals("USD")) {
+            availableCars = currencyService.convertListOfCars(availableCars, currency);
+        }
         return new ResponseEntity<>(availableCars, HttpStatus.OK);
     }
 
