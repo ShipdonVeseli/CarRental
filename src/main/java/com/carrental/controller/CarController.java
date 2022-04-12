@@ -31,9 +31,12 @@ public class CarController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Car>> getAllCars(@RequestParam(name = "currency") String currency) {
+    public ResponseEntity<?> getAllCars(@RequestParam(name = "currency") String currency) {
+        if(currencyService.checkIfValidCurrency(currency)) {
+            return new ResponseEntity<>("Invalid Currency", new HttpHeaders(), HttpStatus.NOT_FOUND);
+        }
         List<Car> cars = carService.getAllCars();
-        if(!currency.equals("USD")) {
+        if(!currency.equals(CurrencyService.DATABASE_CURRENCY)) {
             cars = currencyService.convertListOfCars(cars, currency);
         }
         return new ResponseEntity<>(cars, HttpStatus.OK);
@@ -50,9 +53,12 @@ public class CarController {
     }
 
     @GetMapping("/availableCars")
-    public ResponseEntity<List<Car>> getAvailableCars(@RequestParam(name = "currency") String currency) {
+    public ResponseEntity<?> getAvailableCars(@RequestParam(name = "currency") String currency) {
+        if(currencyService.checkIfValidCurrency(currency)) {
+            return new ResponseEntity<>("Invalid Currency", new HttpHeaders(), HttpStatus.NOT_FOUND);
+        }
         List<Car> availableCars = carService.getAvailableCars();
-        if(!currency.equals("USD")) {
+        if(!currency.equals(CurrencyService.DATABASE_CURRENCY)) {
             availableCars = currencyService.convertListOfCars(availableCars, currency);
         }
         return new ResponseEntity<>(availableCars, HttpStatus.OK);

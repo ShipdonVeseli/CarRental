@@ -3,7 +3,6 @@ package com.carrental.controller;
 import com.carrental.entity.Car;
 import com.carrental.entity.User;
 import com.carrental.entity.exception.CarIsAlreadyAssignedException;
-import com.carrental.entity.exception.InvalidInputException;
 import com.carrental.entity.exception.UserHasNotThisCarException;
 import com.carrental.entity.exception.UsernameAlreadyExistsException;
 import com.carrental.model.JwtRequest;
@@ -67,9 +66,12 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/cars")
-    public ResponseEntity<List<Car>> getCars(@PathVariable final Long userId, @RequestParam(name = "currency") String currency) {
+    public ResponseEntity<?> getCars(@PathVariable final Long userId, @RequestParam(name = "currency") String currency) {
+        if(currencyService.checkIfValidCurrency(currency)) {
+            return new ResponseEntity<>("Invalid Currency", new HttpHeaders(), HttpStatus.NOT_FOUND);
+        }
         List<Car> carsFromUser = userService.getCars(userId);
-        if(!currency.equals("USD")) {
+        if(!currency.equals(CurrencyService.DATABASE_CURRENCY)) {
             carsFromUser = currencyService.convertListOfCars(carsFromUser, currency);
         }
         return new ResponseEntity<>(carsFromUser, HttpStatus.OK);
