@@ -63,6 +63,20 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public void removeUser(User user){
+        Optional<User> delUser=userRepository.findByUsername(user.getUsername());
+        if(delUser.isPresent()) {
+            userRepository.delete(delUser.get());
+        }
+
+    }
+
+
+
+    public void deliteDB(){
+        userRepository.deleteAll();
+    }
+
     public boolean checkIfUserHasCar(Long userId, Long carId) {
         User user = getUser(userId);
         Car car = carService.getCar(carId);
