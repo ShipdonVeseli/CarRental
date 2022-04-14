@@ -7,7 +7,13 @@ import com.carrental.entity.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +31,7 @@ public class CurrencyService {
     public CurrencyService(CarService carService, UserService userService) {
         this.carService = carService;
         this.userService = userService;
-        addCurrencies();
+        getCurrencies();
     }
 
     public List<Car> convertListOfCars(List<Car> carsToConvert, String currency) {
@@ -42,6 +48,29 @@ public class CurrencyService {
             cars.get(i).setDayPrice(result.get(i));
         }
         return cars;
+    }
+
+    private void getCurrencies() {
+        try {
+            URL url = new URL("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml");
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setNamespaceAware(true);
+            Document doc = factory.newDocumentBuilder().parse(url.openStream());
+            doc.getDocumentElement().normalize();
+
+            NodeList nodeList = doc.getElementsByTagName("*");
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Element node = (Element) nodeList.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    if(node.getNodeName().equals("Cube") && node.hasAttribute("currency")) {
+                        currencies.add(node.getAttribute("currency"));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        currencies.forEach(System.out::println);
     }
 
     private void addCurrencies() {

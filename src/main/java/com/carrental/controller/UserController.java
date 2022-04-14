@@ -67,7 +67,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}/cars")
     public ResponseEntity<?> getCars(@PathVariable final Long userId, @RequestParam(name = "currency") String currency) {
-        if(currencyService.checkIfValidCurrency(currency)) {
+        if(!currencyService.checkIfValidCurrency(currency)) {
             return new ResponseEntity<>("Invalid Currency", new HttpHeaders(), HttpStatus.NOT_FOUND);
         }
         List<Car> carsFromUser = userService.getCars(userId);
