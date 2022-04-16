@@ -11,12 +11,12 @@ public class SoapClientConfig {
 
     public static String baseNameSpace;
     public static String baseURI;
-    private final String path = "src/main/resources/wsdl/currencyConverter.wsdl";
+    //private final String path = "src/main/resources/wsdl/currencyConverter.wsdl";
     public SoapClientConfig() throws Exception {
         try
         {
-            File file = new File(path);
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            InputStream resourceStream = getClass().getClassLoader().getResourceAsStream("currencyConverter.wsdl");
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceStream));
 
             String rootNameSpace = null;
 

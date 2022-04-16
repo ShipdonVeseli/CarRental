@@ -14,7 +14,8 @@
 	<name>carrental</name>
 	<description>Carrental Project</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
+		<maven.compiler.source>8</maven.compiler.source>
 	</properties>
 	<dependencies>
 		<dependency>

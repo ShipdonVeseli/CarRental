@@ -28,9 +28,9 @@ public class CarService {
     
     public Car getCar(Long id) {
         Optional<Car> car = carRepository.findById(id);
-        if(car.isEmpty()) {
+       /* if(car.isEmpty()) {
             throw new CarDoesNotExistsException(id);
-        }
+        }*/
         return car.get();
     }
 

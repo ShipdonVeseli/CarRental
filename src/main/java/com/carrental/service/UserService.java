@@ -39,9 +39,9 @@ public class UserService implements UserDetailsService {
 
     public User getUserByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        if(user.isEmpty()) {
+        /*if(user.isEmpty()) {
             throw new UserDoesNotExistsException(username);
-        }
+        }*/
         return user.get();
     }
 
