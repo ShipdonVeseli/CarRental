@@ -29,8 +29,6 @@ class CarControllerTest {
     @Autowired
     CarController carController;
 
-
-
     @Test
     void createCarTest(){
         try {
@@ -39,13 +37,11 @@ class CarControllerTest {
             double dayPrice=Math.PI;
             String transmission="testTransmission";
 
-
             car.setAvailableSeats(availableSeats);
             car.setTransmission(transmission);
             car.setDayPrice(dayPrice);
 
             ResponseEntity<Car> result= carController.createNewCar(car);
-
 
             System.out.println(result.toString());
 
@@ -56,12 +52,28 @@ class CarControllerTest {
 
             System.out.println(car);
             System.out.println(actualCar);
+
             assertEquals(statusExpected,statusActuall);
             assertEquals(car,actualCar);
         }catch (Exception e){
             e.printStackTrace();
             fail();
         }
+    }
+
+    @Test
+    void getCars(){
+        try{
+
+            ResponseEntity<?> result= carController.getAvailableCars(CurrencyService.DATABASE_CURRENCY);
+            System.out.println(result.getBody().toString());
+        }catch (Exception e){
+            e.printStackTrace();
+            fail();
+        }
+
+
+
     }
 
 }
