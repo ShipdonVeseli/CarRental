@@ -64,16 +64,35 @@ class CarControllerTest {
     @Test
     void getCars(){
         try{
-
             ResponseEntity<?> result= carController.getAvailableCars(CurrencyService.DATABASE_CURRENCY);
             System.out.println(result.getBody().toString());
         }catch (Exception e){
             e.printStackTrace();
             fail();
         }
+    }
 
+    @Test
+    void getAllCars(){
+        try{
+            ResponseEntity<?> result= carController.getAllCars(CurrencyService.DATABASE_CURRENCY);
+            System.out.println(result.getBody().toString());
+        }catch (Exception e){
+            e.printStackTrace();
+            fail();
+        }
+    }
 
-
+    @Test
+    void getCar(){
+        try{
+            long index= 1;
+            ResponseEntity<?> result= carController.getCar(index);
+            System.out.println(result.getBody().toString());
+        }catch (Exception e){
+            e.printStackTrace();
+            fail();
+        }
     }
 
 }
